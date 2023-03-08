@@ -56,3 +56,5 @@ Kroki:
 - `make`
 
 ![](img/buildroot.png)
+
+- następnie po uruchomieniu systemu dodaliśmy plik `test` i wykonaliśmy `reboot` systemu, po uruchomieniu plik dalej był w systemie plików
