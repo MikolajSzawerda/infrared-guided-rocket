@@ -54,3 +54,5 @@ Kroki:
 - z poprzedniej konifguracji pozostawiliśmy włączony External toolchain, oraz kompresję obrazu w Kernel
 - w filesystem images: wyłączyliśmy initramfs, włączyliśmy ext2/3/4
 - `make`
+
+![](img/buildroot.png)
