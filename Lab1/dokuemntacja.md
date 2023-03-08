@@ -43,3 +43,14 @@ Kroki:
 - w meny wybranie `Toolchain --> Toolchain type: External toolchain`
 - w filesystem images: zaznaczenie cpio, opcji initramfs i wyłączenie ext2/3/4, włączenie kompresji obrazu: gzip
 - zapis ustawień w `.config` i urochomienie kompilacji `make`
+- zamontowaliśmy partycję 1 w /mnt przy pomocy `mount /dev/mmcblk0p1 /mnt`
+- skompilowany obraz `Image` pod nazwą `kernel8.img`, linię poleceń `cmdline.txt` z katologu `rpi-firmware`  i drzewo urządzeń `bcm2711-rpi-4-b.dtb` pobraliśmy z poziomu systemu ratunkwoego do katologu `/user`
+- zrestartowaliśmy RBi4 `reboot` z wciśniętym przyciskiem `sw4`
+
+#### Wersja bez initramfs
+
+Kroki:
+- usuneliśmy poprzedni obraz systemy `make linux-dirclean`
+- z poprzedniej konifguracji pozostawiliśmy włączony External toolchain, oraz kompresję obrazu w Kernel
+- w filesystem images: wyłączyliśmy initramfs, włączyliśmy ext2/3/4
+- `make`
