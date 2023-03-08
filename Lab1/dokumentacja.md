@@ -55,6 +55,6 @@ Kroki:
 - w filesystem images: wyłączyliśmy initramfs, włączyliśmy ext2/3/4
 - `make`
 
-![](img/buildroot.png)
+![](img/start_blrd.png)
 
 - następnie po uruchomieniu systemu dodaliśmy plik `test` i wykonaliśmy `reboot` systemu, po uruchomieniu plik dalej był w systemie plików
