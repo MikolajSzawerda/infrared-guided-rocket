@@ -40,8 +40,17 @@ $(TARGET_CC) -o $(PKG_BUILD_DIR)/bug1.o bug1.c $(PKG_BUILD_DIR)/bug1
 - Poleceniem `directory` dodajemy katalog ze źródłami
 
 ### Debugowanie bug1
+![](img/bug1.png)
+
+Tablica w której program próbuje pisać nie została zaalokowana
 
 ### Debugowanie bug2
+![](img/bug2.png)
+
+Program zaalokował tablicę o rozmiarze 1000, natomiast próbuje uzyskać dostęp do niezaalokowanej pamięci (i>1000)
 
 ### Debugowanie bug3
 
+![](img/bug3.png)
+
+Początkowe dwa stringi są umiejscowione obok siebie na jednej stronie. Program modyfikując s1, wychodzi po za niego i zmienia wartość s2, program nie zgłasza segfault ponieważ program nie wychodzi po za przydzieloną stronę.
