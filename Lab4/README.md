@@ -32,7 +32,18 @@ Pobraliśmy SDK OpenWRT, wykonaliśmy `make clean` i skompilowaliśmy pakiet dla
 
 ## Rozkład czasu dostarczania
 
-### 3 klientów, 1 rdzeń, pełne obciążenie
-### 3 klientów, 2 rdzeń, pełne obciążenie
-### 3 klientów, 2 rdzeń, bez obciążenia
-### 3 klientów, 4 rdzeń, bez obciążenia
+![](plots/zad4_hist.png)
+
+## Modyfikacja programu z aktywnym oczekiwaniem
+
+Dodanie aktywnego oczekiwanie przyspieszyło odbieranie danych z serwera. Przyspieszenie to wynika również z tego, że procesor jest w stanie obsłużyć każdego z klientów.
+
+![](plots/zad5_hist.png)
+
+## Nieprawidłowy rozkład czasów dostarczania
+
+Nieprawidłowy rozkład wynika z zastosowania `usleep`, który nie gwarantuje terminowego wybudzenia
+
+### Nieprawdiłowy rozkład
+
+![](plots/zad6_hist.png)
