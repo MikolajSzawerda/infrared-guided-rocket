@@ -34,9 +34,10 @@ endef
 
 # Package build instructions; invoke the target-specific compiler to first compile the source file, and then to link the file into the final executable
 define Build/Compile
-	$(TARGET_CXX) $(TARGET_CXXFLAGS) -o $(PKG_BUILD_DIR)/thermo_client.o -c $(PKG_BUILD_DIR)/Camera.cpp
+	$(TARGET_CXX) $(TARGET_CXXFLAGS) -o $(PKG_BUILD_DIR)/camera.o -c $(PKG_BUILD_DIR)/Camera.cpp
+	$(TARGET_CXX) $(TARGET_CXXFLAGS) -o $(PKG_BUILD_DIR)/camera_client.o -c $(PKG_BUILD_DIR)/CameraClient.cpp
 	$(TARGET_CC) $(TARGET_CFLAGS) -o $(PKG_BUILD_DIR)/periphery.o -c $(PKG_BUILD_DIR)/i2c.c
-	$(TARGET_CXX) -o $(PKG_BUILD_DIR)/thermo_client $(PKG_BUILD_DIR)/thermo_client.o $(PKG_BUILD_DIR)/periphery.o
+	$(TARGET_CXX) -o $(PKG_BUILD_DIR)/thermo_client $(PKG_BUILD_DIR)/periphery.o $(PKG_BUILD_DIR)/camera_client.o $(PKG_BUILD_DIR)/camera.o
 endef
 
 # Package install instructions; create a directory inside the package to hold our executable, and then copy the executable we built previously into the folder

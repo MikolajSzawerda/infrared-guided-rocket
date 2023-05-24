@@ -8,15 +8,18 @@ bool Camera::begin() {
 
     // enter normal mode
     _pctl.PCTL = AMG88xx_NORMAL_MODE;
-    write8(AMG88xx_PCTL, _pctl.get());
+    uint8_t a = _pctl.get();
+    write8(AMG88xx_PCTL, &a);
 
     // software reset
     _rst.RST = AMG88xx_INITIAL_RESET;
-    write8(AMG88xx_RST, _rst.get());
+    a=_rst.get();
+    write8(AMG88xx_RST, &a);
 
     // set to 10 FPS
     _fpsc.FPS = AMG88xx_FPS_10;
-    write8(AMG88xx_FPSC, _fpsc.get());
+    a=_fpsc.get();
+    write8(AMG88xx_FPSC, &a);
 
     usleep(100000);
 
