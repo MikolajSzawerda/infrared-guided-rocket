@@ -1,63 +1,42 @@
 #include "Camera.h"
 
-bool Camera::begin() {
+i2c_t* begin() {
+    i2c_t* i2c_dev;
     if (i2c_open(i2c_dev, "/dev/i2c-0") < 0) {
         perror("i2c_open() failed");
-        return false;
+        return 0;
     }
 
     // enter normal mode
-    _pctl.PCTL = AMG88xx_NORMAL_MODE;
-    uint8_t a = _pctl.get();
-    write8(AMG88xx_PCTL, &a);
+    uint8_t a = AMG88xx_NORMAL_MODE;
+    write8(i2c_dev, AMG88xx_PCTL, &a);
 
     // software reset
-    _rst.RST = AMG88xx_INITIAL_RESET;
-    a=_rst.get();
-    write8(AMG88xx_RST, &a);
+    a= AMG88xx_INITIAL_RESET;
+    write8(i2c_dev, AMG88xx_RST, &a);
 
     // set to 10 FPS
-    _fpsc.FPS = AMG88xx_FPS_10;
-    a=_fpsc.get();
-    write8(AMG88xx_FPSC, &a);
+    a=AMG88xx_FPS_10;
+    write8(i2c_dev, AMG88xx_FPSC, &a);
 
-    usleep(100000);
+//    usleep(100000);
 
-    return true;
+    return i2c_dev;
 }
 
-/**************************************************************************/
-/*!
-    @brief  Read Infrared sensor raw values
-    @param  buf the array to place the pixels in
-    @param  pixels Optional number of pixels to read (up to 64). Default is
-   64 pixels. Each pixel value is 12 bits, so it is stored in 2 bytes of
-   the buf array,
-    @return up to 128 bytes of pixel data in buf
-*/
-/**************************************************************************/
-void Camera::readPixelsRaw(uint8_t *buf, uint8_t pixels) {
+void readPixelsRaw(i2c_t* i2c_dev, uint8_t *buf, uint8_t pixels) {
     uint8_t bytesToRead =
             MIN((uint8_t)(pixels << 1), (uint8_t)(AMG88xx_PIXEL_ARRAY_SIZE << 1));
-    this->read(AMG88xx_PIXEL_OFFSET, buf, bytesToRead);
+    plain_read(i2c_dev, AMG88xx_PIXEL_OFFSET, buf, bytesToRead);
 }
 
-/**************************************************************************/
-/*!
-    @brief  Read Infrared sensor values
-    @param  buf the array to place the pixels in
-    @param  pixels Optional number of pixels to read (up to 64). Default is
-   64 pixels.
-    @return up to 64 float values of pixel data in buf
-*/
-/**************************************************************************/
-void Camera::readPixels(float *buf, uint8_t pixels) {
+void readPixels(i2c_t* i2c_dev, float *buf, uint8_t pixels) {
     uint16_t recast;
     float converted;
     uint8_t bytesToRead =
             MIN((uint8_t)(pixels << 1), (uint8_t)(AMG88xx_PIXEL_ARRAY_SIZE << 1));
     uint8_t rawArray[bytesToRead];
-    this->read(AMG88xx_PIXEL_OFFSET, rawArray, bytesToRead);
+    plain_read(i2c_dev, AMG88xx_PIXEL_OFFSET, rawArray, bytesToRead);
 
     for (int i = 0; i < pixels; i++) {
         uint8_t pos = i << 1;
@@ -75,14 +54,14 @@ void Camera::readPixels(float *buf, uint8_t pixels) {
     @returns one byte of register data
 */
 /**************************************************************************/
-uint8_t Camera::read8(uint8_t reg) {
+uint8_t read8(i2c_t* i2c_dev, uint8_t reg) {
     uint8_t ret;
-    this->read(reg, &ret, 1);
+    plain_read(i2c_dev, reg, &ret, 1);
 
     return ret;
 }
 
-void Camera::read(uint8_t reg, uint8_t *buf, uint8_t num) {
+void plain_read(i2c_t* i2c_dev, uint8_t reg, uint8_t *buf, uint8_t num) {
     uint8_t msg_addr[] = { reg};
     struct i2c_msg msgs[2] =
             {
@@ -98,7 +77,7 @@ void Camera::read(uint8_t reg, uint8_t *buf, uint8_t num) {
     }
 }
 
-void Camera::write8(uint8_t reg, uint8_t *buf) {
+void write8(i2c_t* i2c_dev,uint8_t reg, uint8_t *buf) {
     uint8_t prefix[1] = {reg};
     struct i2c_msg msgs[2] =
             {
@@ -121,7 +100,7 @@ void Camera::write8(uint8_t reg, uint8_t *buf) {
     @returns the converted floating point value
 */
 /**************************************************************************/
-float Camera::signedMag12ToFloat(uint16_t val) {
+float signedMag12ToFloat(uint16_t val) {
     // take first 11 bits as absolute val
     uint16_t absVal = (val & 0x7FF);
 
@@ -136,7 +115,7 @@ float Camera::signedMag12ToFloat(uint16_t val) {
     @returns the converted floating point value
 */
 /**************************************************************************/
-float Camera::int12ToFloat(uint16_t val) {
+float int12ToFloat(uint16_t val) {
     int16_t sVal =
             (val << 4); // shift to left so that sign bit of 12 bit integer number is
     // placed on sign bit of 16 bit signed integer number

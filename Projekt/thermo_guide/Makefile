@@ -4,7 +4,7 @@ include $(TOPDIR)/rules.mk
 # The name and version of your package are used to define the variable to point to the build directory of your package: $(PKG_BUILD_DIR)
 PKG_NAME:=thermo_guide
 PKG_VERSION:=1.0
-PKG_RELEASE:=15
+PKG_RELEASE:=30
 
 # Source settings (i.e. where to find the source codes)
 # This is a custom variable, used below
@@ -34,10 +34,10 @@ endef
 
 # Package build instructions; invoke the target-specific compiler to first compile the source file, and then to link the file into the final executable
 define Build/Compile
-	$(TARGET_CXX) $(TARGET_CXXFLAGS) -o $(PKG_BUILD_DIR)/camera.o -c $(PKG_BUILD_DIR)/Camera.cpp
-	$(TARGET_CXX) $(TARGET_CXXFLAGS) -o $(PKG_BUILD_DIR)/camera_client.o -c $(PKG_BUILD_DIR)/CameraClient.cpp
+	$(TARGET_CC) $(TARGET_CFLAGS) -o $(PKG_BUILD_DIR)/camera.o -c $(PKG_BUILD_DIR)/Camera.c
+	$(TARGET_CC) $(TARGET_CFLAGS) -o $(PKG_BUILD_DIR)/camera_client.o -c $(PKG_BUILD_DIR)/CameraClient.c
 	$(TARGET_CC) $(TARGET_CFLAGS) -o $(PKG_BUILD_DIR)/periphery.o -c $(PKG_BUILD_DIR)/i2c.c
-	$(TARGET_CXX) -o $(PKG_BUILD_DIR)/thermo_client $(PKG_BUILD_DIR)/periphery.o $(PKG_BUILD_DIR)/camera_client.o $(PKG_BUILD_DIR)/camera.o
+	$(TARGET_CC) -o $(PKG_BUILD_DIR)/thermo_client $(PKG_BUILD_DIR)/periphery.o $(PKG_BUILD_DIR)/camera_client.o $(PKG_BUILD_DIR)/camera.o
 endef
 
 # Package install instructions; create a directory inside the package to hold our executable, and then copy the executable we built previously into the folder

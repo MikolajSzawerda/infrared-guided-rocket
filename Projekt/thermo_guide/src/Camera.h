@@ -4,10 +4,12 @@
 
 #ifndef CLIENTSERVER_CAMERA_H
 #define CLIENTSERVER_CAMERA_H
-#include <cstdint>
+
+#include "stdint.h"
 #include "i2c.h"
 #include "stdio.h"
 #include <unistd.h>
+
 #define MIN(X, Y) (((X) < (Y)) ? (X) : (Y))
 
 
@@ -48,13 +50,21 @@ enum power_modes {
     AMG88xx_STAND_BY_10 = 0x21
 };
 
-enum sw_resets { AMG88xx_FLAG_RESET = 0x30, AMG88xx_INITIAL_RESET = 0x3F };
+enum sw_resets {
+    AMG88xx_FLAG_RESET = 0x30, AMG88xx_INITIAL_RESET = 0x3F
+};
 
-enum frame_rates { AMG88xx_FPS_10 = 0x00, AMG88xx_FPS_1 = 0x01 };
+enum frame_rates {
+    AMG88xx_FPS_10 = 0x00, AMG88xx_FPS_1 = 0x01
+};
 
-enum int_enables { AMG88xx_INT_DISABLED = 0x00, AMG88xx_INT_ENABLED = 0x01 };
+enum int_enables {
+    AMG88xx_INT_DISABLED = 0x00, AMG88xx_INT_ENABLED = 0x01
+};
 
-enum int_modes { AMG88xx_DIFFERENCE = 0x00, AMG88xx_ABSOLUTE_VALUE = 0x01 };
+enum int_modes {
+    AMG88xx_DIFFERENCE = 0x00, AMG88xx_ABSOLUTE_VALUE = 0x01
+};
 
 /*=========================================================================*/
 
@@ -62,119 +72,20 @@ enum int_modes { AMG88xx_DIFFERENCE = 0x00, AMG88xx_ABSOLUTE_VALUE = 0x01 };
 #define AMG88xx_PIXEL_TEMP_CONVERSION .25
 #define AMG88xx_THERMISTOR_CONVERSION .0625
 
-class Camera{
-public:
-    bool begin();
+i2c_t* begin();
 
-    void readPixelsRaw(uint8_t *buf, uint8_t pixels = AMG88xx_PIXEL_ARRAY_SIZE);
-    void readPixels(float *buf, uint8_t pixels = AMG88xx_PIXEL_ARRAY_SIZE);
-private:
-    i2c_t* i2c_dev = NULL; ///< Pointer to I2C bus interface
+void readPixelsRaw(i2c_t* i2c_dev, uint8_t *buf, uint8_t pixels);
 
-    uint8_t read8(uint8_t reg);
-    void write8(uint8_t reg, uint8_t *buf);
+void readPixels(i2c_t* i2c_dev, float *buf, uint8_t pixels);
 
-    void read(uint8_t reg, uint8_t *buf, uint8_t num);
+uint8_t read8(i2c_t* i2c_dev, uint8_t reg);
 
-    float signedMag12ToFloat(uint16_t val);
-    float int12ToFloat(uint16_t val);
+void write8(i2c_t* i2c_dev,uint8_t reg, uint8_t *buf);
 
-    // The power control register
-    struct pctl {
-        // 0x00 = Normal Mode
-        // 0x01 = Sleep Mode
-        // 0x20 = Stand-by mode (60 sec intermittence)
-        // 0x21 = Stand-by mode (10 sec intermittence)
+void plain_read(i2c_t* i2c_dev, uint8_t reg, uint8_t *buf, uint8_t num);
 
-        uint8_t PCTL : 8;
+float signedMag12ToFloat(uint16_t val);
 
-        uint8_t get() { return PCTL; }
-    };
-    pctl _pctl;
+float int12ToFloat(uint16_t val);
 
-    // reset register
-    struct rst {
-        // 0x30 = flag reset (all clear status reg 0x04, interrupt flag and
-        // interrupt table) 0x3F = initial reset (brings flag reset and returns to
-        // initial setting)
-
-        uint8_t RST : 8;
-
-        uint8_t get() { return RST; }
-    };
-    rst _rst;
-
-    // frame rate register
-    struct fpsc {
-
-        // 0 = 10FPS
-        // 1 = 1FPS
-        uint8_t FPS : 1;
-
-        uint8_t get() { return FPS & 0x01; }
-    };
-    fpsc _fpsc;
-
-    // interrupt control register
-    struct intc {
-
-        // 0 = INT output reactive (Hi-Z)
-        // 1 = INT output active
-        uint8_t INTEN : 1;
-
-        // 0 = Difference interrupt mode
-        // 1 = absolute value interrupt mode
-        uint8_t INTMOD : 1;
-
-        uint8_t get() { return (INTMOD << 1 | INTEN) & 0x03; }
-    };
-    intc _intc;
-
-    // status register
-    struct stat {
-        uint8_t unused : 1;
-        // interrupt outbreak (val of interrupt table reg)
-        uint8_t INTF : 1;
-
-        // temperature output overflow (val of temperature reg)
-        uint8_t OVF_IRS : 1;
-
-        // thermistor temperature output overflow (value of thermistor)
-        uint8_t OVF_THS : 1;
-
-        uint8_t get() {
-            return ((OVF_THS << 3) | (OVF_IRS << 2) | (INTF << 1)) & 0x0E;
-        }
-    };
-    stat _stat;
-
-    // status clear register
-    // write to clear overflow flag and interrupt flag
-    // after writing automatically turns to 0x00
-    struct sclr {
-        uint8_t unused : 1;
-        // interrupt flag clear
-        uint8_t INTCLR : 1;
-        // temp output overflow flag clear
-        uint8_t OVS_CLR : 1;
-        // thermistor temp output overflow flag clear
-        uint8_t OVT_CLR : 1;
-
-        uint8_t get() {
-            return ((OVT_CLR << 3) | (OVS_CLR << 2) | (INTCLR << 1)) & 0x0E;
-        }
-    };
-    sclr _sclr;
-
-    // average register
-    // for setting moving average output mode
-    struct ave {
-        uint8_t unused : 5;
-        // 1 = twice moving average mode
-        uint8_t MAMOD : 1;
-
-        uint8_t get() { return (MAMOD << 5); }
-    };
-    struct ave _ave;
-};
 #endif //CLIENTSERVER_CAMERA_H
