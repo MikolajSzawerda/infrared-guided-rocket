@@ -97,7 +97,18 @@ void Camera::read(uint8_t reg, uint8_t *buf, uint8_t num) {
 
 void Camera::write8(uint8_t reg, uint8_t *buf) {
     uint8_t prefix[1] = {reg};
-    i2c_dev->write(buf, 1, true, prefix, 1);
+    struct i2c_msg msgs[2] =
+            {
+                    /* Write 16-bit address */
+                    { .addr = AMG88xx_ADDRESS, .flags = 0, .len = 1, .buf = prefix },
+                    /* Read 8-bit data */
+                    { .addr = AMG88xx_ADDRESS, .flags = 0, .len = 1, .buf = buf},
+            };
+
+    /* Transfer a transaction with two I2C messages */
+    if (i2c_transfer(i2c_dev, msgs, 2) < 0) {
+        perror("Error reading from I2C device");
+    }
 }
 
 /**************************************************************************/
