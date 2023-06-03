@@ -4,7 +4,7 @@ include $(TOPDIR)/rules.mk
 # The name and version of your package are used to define the variable to point to the build directory of your package: $(PKG_BUILD_DIR)
 PKG_NAME:=thermo_guide
 PKG_VERSION:=1.0
-PKG_RELEASE:=39
+PKG_RELEASE:=58
 
 # Source settings (i.e. where to find the source codes)
 # This is a custom variable, used below
@@ -42,8 +42,9 @@ endef
 # Package install instructions; create a directory inside the package to hold our executable, and then copy the executable we built previously into the folder
 define Package/$(PKG_NAME)/install
 	$(INSTALL_DIR) $(1)/usr/bin
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/app/thermo_client $(1)/usr/bin
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/Camera/camera_test $(1)/usr/bin
+#	$(INSTALL_BIN) $(PKG_BUILD_DIR)/app/thermo_client $(1)/usr/bin
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/ServoController/servo_test $(1)/usr/bin
+#	$(INSTALL_BIN) $(PKG_BUILD_DIR)/Camera/camera_test $(1)/usr/bin
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/SocketClient/client_test $(1)/usr/bin
 endef
 

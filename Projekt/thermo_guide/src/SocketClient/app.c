@@ -1,6 +1,6 @@
 #include "Client.h"
 #include <stdlib.h>
-#define SERVER_IP "192.168.0.185"
+#define SERVER_IP "192.168.43.77"
 #define SERVER_PORT 6969
 
 void generate_random_numbers(float* buffer, int n);

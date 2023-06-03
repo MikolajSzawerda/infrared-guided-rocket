@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-HOST = "192.168.0.185"
+HOST = "192.168.43.77"
 PORT = 6969
 
 PLT_TITLE = "Rocket Thermal Guidance System Visualization"

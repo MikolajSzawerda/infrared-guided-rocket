@@ -1,5 +1,5 @@
 
-all: camera_lib client_lib app
+all: servo_lib client_lib
 
 camera_lib:
 	$(MAKE) -C Camera
@@ -7,10 +7,14 @@ camera_lib:
 client_lib:
 	$(MAKE) -C SocketClient
 
-app: camera_lib client_lib
+servo_lib:
+	$(MAKE) -C ServoController
+
+app: camera_lib client_lib servo_lib
 	$(MAKE) -C app
 
 clean:
 	$(MAKE) -C camera_lib clean
 	$(MAKE) -C client_lib clean
+	$(MAKE) -C servo_lib clean
 	$(MAKE) -C app clean

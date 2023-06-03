@@ -1,0 +1,1 @@
+scp ipks/thermo_guide_rpi.ipk root@192.168.43.132:~/thermo_guide.ipk
