@@ -5,7 +5,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
-#include "Camera.h"
+#include "Camera/Camera.h"
 #define BUFFER_SIZE 64
 #define SERVER_IP "192.168.43.77"
 #define SERVER_PORT 6969

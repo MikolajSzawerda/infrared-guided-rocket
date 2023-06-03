@@ -1,6 +1,0 @@
-wget -q https://downloads.openwrt.org/releases/22.03.5/targets/armvirt/32/openwrt-22.03.5-armvirt-32-zImage -O zImage
-wget -q https://downloads.openwrt.org/releases/22.03.5/targets/armvirt/32/openwrt-22.03.5-armvirt-32-rootfs-ext4.img.gz -O rootfs.ext4.gz
-gzip -d rootfs.ext4.gz
-
-wget -q https://downloads.openwrt.org/releases/22.03.3/targets/bcm27xx/bcm2711/openwrt-sdk-22.03.3-bcm27xx-bcm2711_gcc-11.2.0_musl.Linux-x86_64.tar.xz -O openwrt.tar.xz
-tar -xf openwrt.tar.xz

@@ -1,0 +1,1 @@
+scp -P 2222 ipks/thermo_guide.ipk root@127.0.0.1:~/thermo_guide.ipk
