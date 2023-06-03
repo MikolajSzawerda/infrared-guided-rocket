@@ -7,8 +7,9 @@
 
 #include "stdint.h"
 #include "i2c.h"
-#include "stdio.h"
 #include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 #define MIN(X, Y) (((X) < (Y)) ? (X) : (Y))
 

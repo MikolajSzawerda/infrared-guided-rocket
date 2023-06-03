@@ -2,7 +2,7 @@
 
 i2c_t* begin() {
     i2c_t* i2c_dev=i2c_new();
-    if (i2c_open(i2c_dev, "/dev/i2c-0") < 0) {
+    if (i2c_open(i2c_dev, "/dev/i2c-1") < 0) {
         perror("i2c_open() failed");
         return 0;
     }
