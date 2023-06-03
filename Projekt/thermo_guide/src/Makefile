@@ -1,50 +1,16 @@
-CAMERA_LIBS = Camera/Camera.c Camera/i2c.c
-CAMERA_LIBS_OBJS = $(CAMERA_LIBS:.c=.o)
 
-CAMERA_TEST_SRCS = Camera/app.c
-CAMERA_TEST_OBJS = $(CAMERA_TEST_SRCS:.c=.o)
+all: camera_lib client_lib app
 
+camera_lib:
+	$(MAKE) -C Camera
 
-CLIENT_LIBS = SocketClient/Client.c
-CLIENT_LIBS_OBJS = $(CLIENT_LIBS:.c=.o)
+client_lib:
+	$(MAKE) -C SocketClient
 
-CLIENT_TEST_SRCS = SocketClient/app.c
-CLIENT_TEST_OBJS = $(CLIENT_TEST_SRCS:.c=.o)
-
-APP_SRCS =  main.c
-APP_OBJS = $(APP_SRCS:.c=.o)
-
-AR = ar
-
-LDFLAGS += -pthread -lrt
-
-MAIN = thermo_client
-CAMERA_LIBRARY = libcamera.a
-CLIENT_LIBRARY = libclient.a
-
-CAMERA_TEST = camera_test
-CLIENT_TEST = client_test
-
-all: $(CAMERA_LIBRARY) $(CLIENT_LIBRARY) $(MAIN) $(CAMERA_TEST) $(CLIENT_TEST)
-
-$(CAMERA_LIBRARY): $(CAMERA_LIBS_OBJS)
-	$(AR) rcs $(CAMERA_LIBRARY) $(CAMERA_LIBS_OBJS)
-
-$(CAMERA_TEST): $(CAMERA_TEST_OBJS)
-	$(CC) -o $(CAMERA_TEST) $(CAMERA_TEST_OBJS) -L. -lcamera
-
-$(CLIENT_LIBRARY): $(CLIENT_LIBS_OBJS)
-	$(AR) rcs $(CLIENT_LIBRARY) $(CLIENT_LIBS_OBJS)
-
-$(CLIENT_TEST): $(CLIENT_TEST_OBJS)
-	$(CC) -o $(CLIENT_TEST) $(CLIENT_TEST_OBJS) -L. -lclient
-
-
-$(MAIN): $(APP_OBJS) $(CAMERA_LIBRARY)
-	$(CC) -o $(MAIN) $(APP_OBJS) -L. -lcamera
-
-%.o: %.c
-	$(CC) -c $< -o $@
+app: camera_lib client_lib
+	$(MAKE) -C app
 
 clean:
-	rm -f $(CAMERA_LIBS_OBJS) $(CAMERA_LIBRARY) $(CAMERA_TEST_OBJS) $(CAMERA_TEST) $(APP_OBJS) $(MAIN)
+	$(MAKE) -C camera_lib clean
+	$(MAKE) -C client_lib clean
+	$(MAKE) -C app clean

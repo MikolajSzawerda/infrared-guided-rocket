@@ -28,7 +28,6 @@ endef
 define Build/Prepare
 	mkdir -p $(PKG_BUILD_DIR)
 	cp -r $(SOURCE_DIR)/* $(PKG_BUILD_DIR)
-	ls -R $(PKG_BUILD_DIR)
 	$(Build/Patch)
 endef
 
@@ -43,9 +42,9 @@ endef
 # Package install instructions; create a directory inside the package to hold our executable, and then copy the executable we built previously into the folder
 define Package/$(PKG_NAME)/install
 	$(INSTALL_DIR) $(1)/usr/bin
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/thermo_client $(1)/usr/bin
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/camera_test $(1)/usr/bin
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/client_test $(1)/usr/bin
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/app/thermo_client $(1)/usr/bin
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/Camera/camera_test $(1)/usr/bin
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/SocketClient/client_test $(1)/usr/bin
 endef
 
 # This command is always the last, it uses the definitions and variables we give above in order to get the job done

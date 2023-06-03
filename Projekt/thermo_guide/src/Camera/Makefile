@@ -1,0 +1,24 @@
+CAMERA_LIBS = Camera.c i2c.c
+CAMERA_LIBS_OBJS = $(CAMERA_LIBS:.c=.o)
+
+CAMERA_TEST_SRCS = app.c
+CAMERA_TEST_OBJS = $(CAMERA_TEST_SRCS:.c=.o)
+
+AR = ar
+
+CAMERA_LIBRARY = libcamera.a
+CAMERA_TEST = camera_test
+
+all: $(CAMERA_LIBRARY) $(CAMERA_TEST)
+
+$(CAMERA_LIBRARY): $(CAMERA_LIBS_OBJS)
+	$(AR) rcs $(CAMERA_LIBRARY) $(CAMERA_LIBS_OBJS)
+
+$(CAMERA_TEST): $(CAMERA_TEST_OBJS)
+	$(CC) -o $(CAMERA_TEST) $(CAMERA_TEST_OBJS) -L. -lcamera
+
+%.o: %.c
+	$(CC) -c $< -o $@
+
+clean:
+	rm -f $(CAMERA_LIBS_OBJS) $(CAMERA_LIBRARY) $(CAMERA_TEST_OBJS) $(CAMERA_TEST)
