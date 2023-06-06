@@ -15,7 +15,7 @@ $(CLIENT_LIBRARY): $(CLIENT_LIBS_OBJS)
 	$(AR) rcs $(CLIENT_LIBRARY) $(CLIENT_LIBS_OBJS)
 
 $(CLIENT_TEST): $(CLIENT_TEST_OBJS)
-	$(CC) -o $(CLIENT_TEST) $(CLIENT_TEST_OBJS) -L. -lclient
+	$(CC) -o $(CLIENT_TEST) $(CLIENT_TEST_OBJS) -L. -lclient -L../ImageProcessor -lprocessor
 
 %.o: %.c
 	$(CC) -c $< -o $@

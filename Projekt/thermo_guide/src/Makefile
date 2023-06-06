@@ -4,7 +4,7 @@ all: servo_lib client_lib camera_lib processor_lib app
 camera_lib:
 	$(MAKE) -C Camera
 
-client_lib:
+client_lib: processor_lib
 	$(MAKE) -C SocketClient
 
 servo_lib:

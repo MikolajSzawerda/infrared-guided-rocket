@@ -1,8 +1,9 @@
 #include <stdlib.h>
 #include "Processor.h"
+#include <stdio.h>
 
 
-inline int manhattanDist(int x1, int x2, int y1, int y2) {
+int manhattanDist(int x1, int x2, int y1, int y2) {
     return abs(x1 - x2) + abs(y1 - y2);
 }
 
@@ -40,7 +41,6 @@ struct HotSpot getHottestSpot2(float* buffer, struct HotSpot* prevHotSpot) {
                     }
                 }
             }
-
             heatVal /= weightsSum;
 
             if(heatVal > hotSpot.val){
@@ -50,12 +50,20 @@ struct HotSpot getHottestSpot2(float* buffer, struct HotSpot* prevHotSpot) {
             }
         }
     }
-
-    if(prevHotSpot != NULL && hotSpot.val > prevHotSpot->val + PREV_HOTSPOT_EPSILON) {
+    printf("X: %d Y: %d VAL: %f\n", hotSpot.x, hotSpot.y, hotSpot.val);
+    if(prevHotSpot != NULL && hotSpot.val < (prevHotSpot->val + PREV_HOTSPOT_EPSILON)) {
         hotSpot.x = prevHotSpot->x;
         hotSpot.y = prevHotSpot->y;
         hotSpot.val = prevHotSpot->val;
     }
 
     return hotSpot;
+}
+
+int flattenHotSpot(struct HotSpot* hotSpot){
+    return 8*hotSpot->y+hotSpot->x;
+}
+
+void oldHotSpotDecay(struct HotSpot* oldHotSpot){
+    oldHotSpot->val*=DECAY_CONSTANT;
 }
