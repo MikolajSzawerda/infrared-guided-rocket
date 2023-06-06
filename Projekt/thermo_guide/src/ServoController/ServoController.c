@@ -51,3 +51,8 @@ void destroy_servo(struct servo* s){
 //    pwm_close(s->handle);
     pwm_free(s->handle);
 }
+
+int step_set_servo_angle(struct servo* s, double angle){
+    double pwm_duty = (angle/180.0) * (MAX_SERVO-MIN_SERVO) + MIN_SERVO;
+    return set_servo_rot_direction(s, pwm_duty);
+}

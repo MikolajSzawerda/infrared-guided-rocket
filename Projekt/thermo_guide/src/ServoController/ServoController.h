@@ -10,6 +10,8 @@
 #define IDLE 0.0
 #define SERVO_FREQ 50.0
 #define OMEGA 1600
+#define MIN_SERVO 0.03
+#define MAX_SERVO 0.12
 
 #define MIN_POINT 0.0
 #define MAX_POINT 7.0
@@ -37,5 +39,7 @@ int set_servo_rot_direction(struct servo* s, double direction);
 int rotate_by_angle(struct servo* s, double angle);
 int servo_to_point(struct servo* s, double point);
 void destroy_servo(struct servo* s);
+
+int step_set_servo_angle(struct servo* s, double angle);
 
 #endif //PROJEKT_SERVOCONTROLLER_H
