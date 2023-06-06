@@ -16,6 +16,7 @@
 
 struct client_package {
     float buffer[BUFFER_SIZE];
+    // u_int32_t hottestSpot;
 };
 
 int init_server_connection(const char* host, uint16_t port);

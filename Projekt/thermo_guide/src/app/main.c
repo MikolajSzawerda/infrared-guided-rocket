@@ -25,6 +25,9 @@ int main(){
     for(;;){
         generate_fake_circle(clientPackage.buffer, t);
         hotSpot = getHottestSpot(clientPackage.buffer);
+        //hotSpot = getHottestSpot2(clientPackage.buffer, &hotSpot);
+        // clientPackage.hottestSpot = 8 * hotSpot.y + hotSpot.x;
+
         if(send_packet(sockfd, &clientPackage) < 0){
             perror("Error sending packet\n");
             exit(1);
