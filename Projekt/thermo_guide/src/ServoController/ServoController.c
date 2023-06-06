@@ -56,3 +56,8 @@ int step_set_servo_angle(struct servo* s, double angle){
     double pwm_duty = (angle/180.0) * (MAX_SERVO-MIN_SERVO) + MIN_SERVO;
     return set_servo_rot_direction(s, pwm_duty);
 }
+
+int step_set_servo_pixel(struct servo* s, int pixel){
+    double pwm_duty = ((7.0-pixel)/7.0) * (MAX_SERVO_PX-MIN_SERVO_PX) + MIN_SERVO_PX;
+    return set_servo_rot_direction(s, pwm_duty);
+}

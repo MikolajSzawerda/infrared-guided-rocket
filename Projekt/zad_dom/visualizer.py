@@ -43,20 +43,21 @@ def main():
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.bind((HOST, PORT))
     s.listen(1)
+    while True:
+        conn, addr = s.accept()
 
-    conn, addr = s.accept()
+        print('Connected to ' + addr[0] + ':' + str(addr[1]))
 
-    print('Connected to ' + addr[0] + ':' + str(addr[1]))
+        while (data_bytes := conn.recv(260)):
+            grid, target_idx = buffer_to_grid(data_bytes)
 
-    while (data_bytes := conn.recv(260)):
-        grid, target_idx = buffer_to_grid(data_bytes)
+            crosshair.center = target_idx % IMG_BORDER_SIZE, target_idx // IMG_BORDER_SIZE
+            thermal_img.set_data(grid)
+            thermal_img.set_clim(vmin=np.min(grid), vmax=np.max(grid))
 
-        crosshair.center = target_idx % IMG_BORDER_SIZE, target_idx // IMG_BORDER_SIZE
-        thermal_img.set_data(grid)
-        thermal_img.set_clim(vmin=np.min(grid), vmax=np.max(grid))
+            figure.canvas.draw()
+            figure.canvas.flush_events()
 
-        figure.canvas.draw()
-        figure.canvas.flush_events()
 
 
 if __name__ == "__main__":

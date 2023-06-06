@@ -1,7 +1,11 @@
 #include "Client.h"
 #include <stdlib.h>
+#include <string.h>
 #define SERVER_IP "192.168.43.77"
 #define SERVER_PORT 6969
+
+int x = 0;
+int y = 0;
 
 void generate_random_numbers(float* buffer, int n);
 
@@ -13,7 +17,7 @@ int main(){
     }
     struct client_package clientPackage;
     printf("Client connected to server!\n");
-    for(int i=0;i<10;i++){
+    for(;;){
         generate_random_numbers(clientPackage.buffer, BUFFER_SIZE);
         if(send_packet(sockfd, &clientPackage) < 0){
             perror("Error sending packet\n");
@@ -21,13 +25,14 @@ int main(){
         } else {
             printf("Packet send!\n");
         }
-        sleep(1);
+        usleep(400000);
     }
     close_server_connection(sockfd);
 }
 
 void generate_random_numbers(float* buffer, int n){
-    for(int i=0;i<n;i++){
-        buffer[i] = 40.0*(float)rand()/(float)RAND_MAX;
-    }
+    memset(buffer, 0, sizeof(float)*n);
+    buffer[8*y+x] = 40;
+    y=(y+1)%8;
+    x=(x+1)%8;
 }

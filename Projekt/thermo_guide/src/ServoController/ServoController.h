@@ -12,6 +12,8 @@
 #define OMEGA 1600
 #define MIN_SERVO 0.03
 #define MAX_SERVO 0.12
+#define MIN_SERVO_PX 0.04
+#define MAX_SERVO_PX 0.11
 
 #define MIN_POINT 0.0
 #define MAX_POINT 7.0
@@ -41,5 +43,6 @@ int servo_to_point(struct servo* s, double point);
 void destroy_servo(struct servo* s);
 
 int step_set_servo_angle(struct servo* s, double angle);
+int step_set_servo_pixel(struct servo* s, int pixel);
 
 #endif //PROJEKT_SERVOCONTROLLER_H

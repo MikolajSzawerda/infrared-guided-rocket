@@ -1,5 +1,5 @@
 
-all: servo_lib client_lib
+all: servo_lib client_lib camera_lib app
 
 camera_lib:
 	$(MAKE) -C Camera
