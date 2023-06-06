@@ -121,3 +121,12 @@ float int12ToFloat(uint16_t val) {
     // placed on sign bit of 16 bit signed integer number
     return sVal >> 4; // shift back the signed number, return converts to float
 }
+
+void generate_fake_circle(float* buffer, double time){
+    memset(buffer, 0, sizeof(float)*BUFFER_SIZE);
+    double x_d = 3*cos(time)+3.0;
+    double y_d = 3*sin(time)+3.0;
+    int x = (int)(x_d+0.5);
+    int y = (int)(y_d+0.5);
+    buffer[8*x+y]=40;
+}

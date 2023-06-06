@@ -8,7 +8,7 @@ MAIN = thermo_client
 all: $(MAIN)
 
 $(MAIN): $(APP_OBJS)
-	$(CC) -o $(MAIN) $(APP_OBJS) -L../Camera -lcamera -L../SocketClient -lclient -L../ServoController -lservo
+	$(CC) -o $(MAIN) $(APP_OBJS) -L../Camera -lcamera -L../SocketClient -lclient -L../ServoController -lservo -L../ImageProcessor -lprocessor
 
 %.o: %.c
 	$(CC) -c $< -o $@

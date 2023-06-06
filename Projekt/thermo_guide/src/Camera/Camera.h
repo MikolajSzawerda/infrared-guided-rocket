@@ -10,6 +10,10 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <math.h>
+
+#define BUFFER_SIZE 64
 
 #define MIN(X, Y) (((X) < (Y)) ? (X) : (Y))
 
@@ -88,5 +92,7 @@ void plain_read(i2c_t* i2c_dev, uint8_t reg, uint8_t *buf, uint8_t num);
 float signedMag12ToFloat(uint16_t val);
 
 float int12ToFloat(uint16_t val);
+
+void generate_fake_circle(float* buffer, double time);
 
 #endif //CLIENTSERVER_CAMERA_H
