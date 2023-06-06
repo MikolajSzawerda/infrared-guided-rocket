@@ -2,10 +2,11 @@ import socket
 import struct
 
 import matplotlib.pyplot as plt
+from matplotlib.patches import Circle
 import numpy as np
 
 
-HOST = "192.168.43.77"
+HOST = "0.0.0.0"
 PORT = 6969
 
 PLT_TITLE = "Rocket Thermal Guidance System Visualization"
@@ -13,13 +14,15 @@ PLT_XLABEL = "X"
 PLT_YLABEL = "Y"
 
 IMG_BORDER_SIZE = 8
-BUFFER_SIZE = IMG_BORDER_SIZE ** 2
+IMG_SIZE = IMG_BORDER_SIZE ** 2
+
+CROSSHAIR_SIZE = 0.08
 
 
-def buffer_to_grid(buffer: bytes) -> np.array:
-    data = struct.unpack(f"{BUFFER_SIZE}f", buffer)
+def buffer_to_grid(buffer: bytes) -> tuple[np.array, int]:
+    data = struct.unpack(f"{IMG_SIZE}fI", buffer)
 
-    return np.reshape(data, (IMG_BORDER_SIZE, IMG_BORDER_SIZE))
+    return np.reshape(data[:IMG_SIZE], (IMG_BORDER_SIZE, IMG_BORDER_SIZE)), data[IMG_SIZE]
 
 
 def main():
@@ -33,6 +36,8 @@ def main():
     plt.show()
 
     thermal_img = ax.imshow(np.zeros((8, 8)), cmap="coolwarm", interpolation="bilinear")
+    crosshair = Circle((IMG_BORDER_SIZE / 2, IMG_BORDER_SIZE / 2), radius=CROSSHAIR_SIZE, color="black")
+    ax.add_patch(crosshair)
     figure.canvas.flush_events()
 
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -43,9 +48,10 @@ def main():
 
     print('Connected to ' + addr[0] + ':' + str(addr[1]))
 
-    while (data_bytes := conn.recv(256)):
-        grid = buffer_to_grid(data_bytes)
+    while (data_bytes := conn.recv(260)):
+        grid, target_idx = buffer_to_grid(data_bytes)
 
+        crosshair.center = target_idx % IMG_BORDER_SIZE, target_idx // IMG_BORDER_SIZE
         thermal_img.set_data(grid)
         thermal_img.set_clim(vmin=np.min(grid), vmax=np.max(grid))
 

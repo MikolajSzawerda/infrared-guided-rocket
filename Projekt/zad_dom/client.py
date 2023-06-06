@@ -1,11 +1,12 @@
 import socket
 import random
+import numpy as np
 import struct
 import time
 
 
-HOST = "127.0.0.1"
-PORT = 8081
+HOST = "0.0.0.0"
+PORT = 6969
 
 INTERVAL = 1
 
@@ -23,7 +24,8 @@ def main():
 
     while True:
         buffer = random_()
-        buf = struct.pack('64f', *buffer)
+        idx_max = np.argmax(buffer)
+        buf = struct.pack('64fI', *buffer, idx_max)
         sock.send(buf)
         time.sleep(INTERVAL)
 
