@@ -9,14 +9,18 @@ int manhattanDist(int x1, int x2, int y1, int y2) {
 
 
 struct HotSpot getHottestSpot(float* buffer){
-    struct HotSpot hotSpot ={0, 0};
+    struct HotSpot hotSpot = {0, 0, -1};
     float curr_max = -1;
     for(int i=0;i<8;i++){
         for(int j=0;j<8;j++){
-            if(buffer[8*i+j]>curr_max){
+
+            if(buffer[8*i+j] < 27.5)
+                buffer[8*i+j] = 0;
+
+            if(buffer[8*i+j]>hotSpot.val){
                 hotSpot.x = i;
                 hotSpot.y = j;
-                curr_max = buffer[8*i+j];
+                hotSpot.val = buffer[8*i+j];
             }
         }
     }
@@ -26,6 +30,13 @@ struct HotSpot getHottestSpot(float* buffer){
 
 struct HotSpot getHottestSpot2(float* buffer, struct HotSpot* prevHotSpot) {
     struct HotSpot hotSpot = {0, 0, 0};
+    for(int i=0;i<BUFFER_SIZE;i++){
+        if(buffer[i] < 27)
+            buffer[i] = 0.0;
+        if(buffer[i] > 33)
+            buffer[i] = 33;
+        buffer[i]=pow(1.2, buffer[i]);
+    }
 
     for(int row=0; row<8; row++){
         for(int col=0; col<8; col++){

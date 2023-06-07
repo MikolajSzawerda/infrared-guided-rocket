@@ -6,7 +6,7 @@ from matplotlib.patches import Circle
 import numpy as np
 
 
-HOST = "0.0.0.0"
+HOST = "10.42.0.1"
 PORT = 6969
 
 PLT_TITLE = "Rocket Thermal Guidance System Visualization"
@@ -19,7 +19,7 @@ IMG_SIZE = IMG_BORDER_SIZE ** 2
 CROSSHAIR_SIZE = 0.08
 
 
-def buffer_to_grid(buffer: bytes) -> tuple[np.array, int]:
+def buffer_to_grid(buffer: bytes):
     data = struct.unpack(f"{IMG_SIZE}fI", buffer)
 
     return np.reshape(data[:IMG_SIZE], (IMG_BORDER_SIZE, IMG_BORDER_SIZE)), data[IMG_SIZE]
@@ -48,7 +48,10 @@ def main():
 
         print('Connected to ' + addr[0] + ':' + str(addr[1]))
 
-        while (data_bytes := conn.recv(260)):
+        while True:
+            data_bytes = conn.recv(260)
+            if not data_bytes:
+                continue
             grid, target_idx = buffer_to_grid(data_bytes)
 
             crosshair.center = target_idx % IMG_BORDER_SIZE, target_idx // IMG_BORDER_SIZE
