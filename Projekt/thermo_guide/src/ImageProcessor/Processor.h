@@ -10,7 +10,7 @@
 #define PREV_HOTSPOT_EPSILON 0.5
 #define CONV_MATRIX_SIZE 1
 #define CONV_WEIGHT_ALPHA 1.0
-#define DECAY_CONSTANT 0.2
+#define DECAY_CONSTANT 0.95
 
 struct HotSpot {
     int x;

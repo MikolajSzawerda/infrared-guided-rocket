@@ -44,8 +44,8 @@ struct HotSpot getHottestSpot2(float* buffer, struct HotSpot* prevHotSpot) {
             heatVal /= weightsSum;
 
             if(heatVal > hotSpot.val){
-                hotSpot.x = row;
-                hotSpot.y = col;
+                hotSpot.x = col;
+                hotSpot.y = row;
                 hotSpot.val = heatVal;
             }
         }
