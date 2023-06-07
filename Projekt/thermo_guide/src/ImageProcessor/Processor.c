@@ -35,8 +35,7 @@ struct HotSpot getHottestSpot2(float* buffer, struct HotSpot* prevHotSpot) {
             for(int i=row-CONV_MATRIX_SIZE; i<=row+CONV_MATRIX_SIZE; ++i) {
                 for(int j=col-CONV_MATRIX_SIZE; j<=col+CONV_MATRIX_SIZE; ++j) {
                     if(i >= 0 && i < 8 && j >= 0 && j < 8) {
-                        int dist = manhattanDist(row, i, col, j);
-                        float weight = (dist == 0)? CONV_WEIGHT_ALPHA : CONV_WEIGHT_ALPHA / dist;
+                        float weight = 1 / (1 + manhattanDist(row, i, col, j));
                         heatVal += buffer[8*i+j] * weight;
                         weightsSum += weight;
                     }
