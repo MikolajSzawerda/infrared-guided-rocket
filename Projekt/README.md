@@ -52,3 +52,16 @@ make package/thermo_guide/compile -j1 V=s
 ```shell
 /etc/init.d/firewall stop
 ```
+
+### config.txt
+```
+dtoverlay=pwm-2chan,pin=12,func=4,pin2=13,func2=4
+dtoverlay=i2c1
+```
+
+### Install
+
+```shell
+kmod-i2c-bcm2835
+kmod-pwm-bcm2835
+```
