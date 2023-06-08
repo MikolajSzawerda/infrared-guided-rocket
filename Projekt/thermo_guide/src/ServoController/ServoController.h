@@ -1,7 +1,3 @@
-//
-// Created by mszawerd on 03.06.23.
-//
-
 #ifndef PROJEKT_SERVOCONTROLLER_H
 #define PROJEKT_SERVOCONTROLLER_H
 

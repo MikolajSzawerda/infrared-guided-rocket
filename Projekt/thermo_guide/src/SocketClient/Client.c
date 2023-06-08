@@ -22,9 +22,6 @@ int init_server_connection(const char* host, uint16_t port){
 }
 
 int send_packet(int sockfd, struct client_package* package){
-    // if(write(sockfd, package->buffer, sizeof (package->buffer)) == -1)
-    //     return -1;
-    // return write(sockfd, package->hottestSpot, sizeof(package->hottestSpot));
     return write(sockfd, package, sizeof (float)*(BUFFER_SIZE+1));
 }
 
